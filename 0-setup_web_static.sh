@@ -1,34 +1,29 @@
 #!/usr/bin/env bash
+# Configure your Nginx server so that
+apt-get update
+apt-get -y install nginx
 
-# Install Nginx if not already installed
-if ! [ -x "$(command -v nginx)" ]; then
-    sudo apt-get update
-    sudo apt-get install -y nginx
-fi
+directories=("/data/web_static/releases/" "/data/web_static/shared/")
 
-# Create necessary directories
-sudo mkdir -p /data/web_static/releases/test/
-sudo mkdir -p /data/web_static/shared/
+for directory in "${directories[@]}";
+do
+    mkdir -p $directory
+done
 
-ysudo "<html>
+echo "<html>
   <head>
   </head>
   <body>
     Holberton School
   </body>
-</html>" >  sudo tee /data/web_static/releases/test/index.html
+</html>" >/data/web_static/releases/test/index.html
 
-# Create symbolic link
-sudo ln -sf /data/web_static/releases/test/ /data/web_static/current
+#Create a symbolic link to /data/web_static/current
+ln -sf /data/web_static/releases/test/ /data/web_static/current
 
-# Give ownership to ubuntu user and group
-sudo chown -R ubuntu:ubuntu /data/
+# recursively to all files and directories within the folder
+chown -R ubuntu:ubuntu /data/
 
-# Update Nginx configuration with alias
-sudo sed -i '/^\s*server_name _;/a \\\n\tlocation /hbnb_static/ {\n\t\talias /data/web_static/current/;\n\t}' /etc/nginx/sites-available/default
+sed -i '/listen 80 default_server;/a \ \n    location /hbnb_static {\n        alias /data/web_static/current/;\n        index index.html;\n    }' /etc/nginx/sites-available/default
 
-# Restart Nginx
-sudo service nginx restart
-
-# Exit successfully
-exit 0
+service nginx restart
