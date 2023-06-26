@@ -1,28 +1,27 @@
 #!/usr/bin/python3
-"""Starts a Flask web application"""
 
-
+"""Script that starts a Flask web application"""
 from flask import Flask
 
 app = Flask(__name__)
 
 
 @app.route('/', strict_slashes=False)
-def hello():
-    """Returns a string at the root route"""
-    return 'Hello HBNB!'
+def hello_hbnb():
+    """Comment"""
+    return "Hello HBNB!"
 
 
 @app.route('/hbnb', strict_slashes=False)
 def hbnb():
-    """Returns a string at the root route"""
-    return 'HBNB'
+    """Comment"""
+    return "HBNB"
 
 
 @app.route('/c/<text>', strict_slashes=False)
-def c(text):
-    """Returns a string at the root route"""
-    return f"C {text.replace('_', ' ')}"
+def text_var(text):
+    """Comment"""
+    return f"C {text.replace("_", " ")}"
 
 
 if __name__ == '__main__':
