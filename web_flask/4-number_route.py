@@ -31,8 +31,8 @@ def text_route_python(text="is cool"):
     return "Python {}".format(text.replace("_", " "))
 
 
-@app.route('number/<int:n>', strict_slashes=False)
-def number_route(n):
+@app.route('/number/<int:n>', strict_slashes=False)
+def num_route(n):
     """Comment"""
     return "{} is a number".format(n)
 
